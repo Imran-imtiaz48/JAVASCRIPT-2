@@ -1,14 +1,35 @@
-function AddTask() {
-    var input = document.getElementById('input').value
-    var element = document.getElementById('task-container')
-    console.log(element)
-    var newElement = document.createElement('div')
-    newElement.setAttribute('id','ind-task')
-    newElement.innerHTML = `<P>${input}</P><button onclick="DeleteTask(event)">DELETE</button>`
-    element.append(newElement)
+function addTask() {
+  const taskInput = document.getElementById('input');
+  const taskText = taskInput.value.trim();
+
+  if (!taskText) {
+    alert('Task cannot be empty.');
+    return;
+  }
+
+  const taskContainer = document.getElementById('task-container');
+  const taskElement = document.createElement('div');
+  taskElement.classList.add('task-item'); // Changed from ID to class for multiple items
+
+  taskElement.innerHTML = `
+    <p>${taskText}</p>
+    <button type="button" class="delete-btn">Delete</button>
+  `;
+
+  // Attach event listener instead of inline onclick
+  taskElement.querySelector('.delete-btn').addEventListener('click', deleteTask);
+
+  taskContainer.appendChild(taskElement);
+  taskInput.value = ''; // Clear input after adding
 }
-function DeleteTask(event){
-    event.target.parentElement.remove()
 
-
+/**
+ * Deletes the task item associated with the event.
+ * @param {Event} event 
+ */
+function deleteTask(event) {
+  const taskItem = event.target.closest('.task-item');
+  if (taskItem) {
+    taskItem.remove();
+  }
 }
